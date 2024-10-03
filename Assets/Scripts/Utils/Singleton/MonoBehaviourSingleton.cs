@@ -9,7 +9,7 @@ namespace Utils.Singleton
 
         public static T Instance => _instance;
 
-        private void Awake()
+        public virtual void Awake()
         {
             _instance = (T) this;
 

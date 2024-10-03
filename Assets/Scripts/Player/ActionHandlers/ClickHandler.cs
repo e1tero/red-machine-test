@@ -1,5 +1,6 @@
 using System;
 using Camera;
+using Events;
 using UnityEngine;
 using Utils.Singleton;
 
@@ -15,6 +16,7 @@ namespace Player.ActionHandlers
         public event Action<Vector3> PointerUpEvent;
         public event Action<Vector3> DragStartEvent;
         public event Action<Vector3> DragEndEvent;
+        public event Action<Vector3> OnScroll;
 
         private Vector3 _pointerDownPosition;
 
@@ -55,8 +57,14 @@ namespace Player.ActionHandlers
 
                 _isClick = false;
             }
+            
+            if (Input.mouseScrollDelta.y != 0)
+            {
+                Vector3 scrollDirection = new Vector3(0, Input.mouseScrollDelta.y, 0);
+                OnScroll?.Invoke(scrollDirection);
+            }
         }
-
+        
         private void LateUpdate()
         {
             if (!_isClick)
@@ -71,19 +79,27 @@ namespace Player.ActionHandlers
                 _isDrag = true;
             }
         }
-
-        public void SetDragEventHandlers(Action<Vector3> dragStartEvent, Action<Vector3> dragEndEvent)
+        
+        public void SubscribeToDragEventHandlers(Action<Vector3> dragStartEvent, Action<Vector3> dragEndEvent)
         {
-            ClearEvents();
-
-            DragStartEvent = dragStartEvent;
-            DragEndEvent = dragEndEvent;
+            DragStartEvent += dragStartEvent;
+            DragEndEvent += dragEndEvent;
         }
 
-        public void ClearEvents()
+        public void UnsubscribeToDragEventHandlers(Action<Vector3> dragStartEvent, Action<Vector3> dragEndEvent)
         {
-            DragStartEvent = null;
-            DragEndEvent = null;
+            DragStartEvent -= dragStartEvent;
+            DragEndEvent -= dragEndEvent;
+        }
+
+        public void SubscribeToScrollEvent(Action<Vector3> scrollEvent)
+        {
+            OnScroll += scrollEvent;
+        }
+        
+        public void UnsubscribeToScrollEvent(Action<Vector3> scrollEvent)
+        {
+            OnScroll -= scrollEvent;
         }
     }
 }

@@ -199,6 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activityType: 1
+  _isTestLevelFirst: 1
 --- !u!4 &1307544591
 Transform:
   m_ObjectHideFlags: 0
@@ -392,3 +393,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activityType: 1
   mainCamera: {fileID: 2040505403}
+  _cameraSettings: {fileID: 11400000, guid: dc734ec433996fa419cc3b7181bf96eb, type: 2}

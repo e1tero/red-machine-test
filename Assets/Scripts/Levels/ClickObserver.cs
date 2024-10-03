@@ -18,6 +18,7 @@ namespace Levels
             
             _clickHandler.PointerDownEvent += OnPointerDown;
             _clickHandler.PointerUpEvent += OnPointerUp;
+            _clickHandler.OnScroll += OnScroll;
         }
 
         private void OnDestroy()
@@ -37,6 +38,11 @@ namespace Levels
         private void OnPointerUp(Vector3 position)
         {
             EventsController.Fire(new EventModels.Game.PlayerFingerRemoved());
+        }
+        
+        private void OnScroll(Vector3 scrollDirection)
+        {
+            EventsController.Fire(new EventModels.Game.ScrollStarted());
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Events;
@@ -29,6 +30,7 @@ namespace Connection
         private void Awake()
         {
             _nodes = colorNodesContainer.GetComponentsInChildren<ColorNode>();
+            var nodeBoundsCalculator = new NodeBoundsCalculator(_nodes);
 
             var nodeTargets = colorNodesContainer.GetComponentsInChildren<ColorNodeTarget>(true);
             foreach (var nodeTarget in nodeTargets)
@@ -38,12 +40,12 @@ namespace Connection
             }
 
             _clickHandler = ClickHandler.Instance;
-            _clickHandler.SetDragEventHandlers(OnDragStart, OnDragEnd);
+            _clickHandler.SubscribeToDragEventHandlers(OnDragStart, OnDragEnd);
         }
-
+        
         private void OnDestroy()
         {
-            _clickHandler.ClearEvents();
+            _clickHandler.UnsubscribeToDragEventHandlers(OnDragStart,OnDragEnd);
         }
 
         private void StartConnecting(ColorNode colorNode)
