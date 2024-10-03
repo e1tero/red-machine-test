@@ -9,7 +9,7 @@ namespace Connection
         {
             CalculateBounds(nodes);
         }
-        
+
         private void CalculateBounds(ColorNode[] nodes)
         {
             Vector2 minBounds = Vector2.positiveInfinity;
@@ -23,7 +23,15 @@ namespace Connection
                 maxBounds = Vector2.Max(maxBounds, position);
             }
 
-            CameraHolder.Instance.GetBoundsStorage().UpdateBounds(minBounds,maxBounds);
+            var boundsStorage = CameraController.GetBoundsStorage();
+            if (boundsStorage != null)
+            {
+                boundsStorage.UpdateBounds(minBounds, maxBounds);
+            }
+            else
+            {
+                Debug.LogWarning("CameraController или BoundsStorage не найдены.");
+            }
         }
     }
 }
